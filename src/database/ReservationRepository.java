@@ -48,7 +48,49 @@ public class ReservationRepository {
 			e.printStackTrace();
 		}
 	}
+	
+	public void updateReservation(int id, Reservation updatedReservation) {
+		try {
+			String query = String.format(
+				"UPDATE `reservations` \r\n" + 
+				"SET `room_no`=%d,`status`='%s'\r\n" + 
+				",`date_in`='%s'\r\n" + 
+				",`date_out`='%s' \r\n" + 
+				"WHERE `id`=%d"
+				, updatedReservation.getRoomId(), updatedReservation.getStatus()
+				, updatedReservation.getDateIn().toString(), updatedReservation.getDateOut().toString()
+				, id);
+						
+			connect.executeUpdate(query);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
+	public Vector<Reservation> getReservation(String status){
+		Vector<Reservation> reservation = new Vector<>();
+		String query = "SELECT * FROM reservations WHERE status='" + status + "'";
+		ResultSet rs = connect.executeQuery(query);
+		
+		try {
+			while(rs.next()) {
+				reservation.add(new Reservation(
+					rs.getInt("id"), 
+					rs.getDate("reservation_date"),
+					rs.getDate("date_in"),
+					rs.getDate("date_out"),
+					rs.getInt("customer_id"),
+					rs.getInt("room_no"),
+					status
+					));
+			}
+		} catch (SQLException e) {
+			
+		}
+		return reservation;
+	}
+	
 	public Vector<Reservation> getReservationByUserId(Integer userId) {
 		Vector<Reservation> reservations = new Vector<>();
 		
@@ -70,9 +112,23 @@ public class ReservationRepository {
 				reservations.add(currReservation);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+	//			e.printStackTrace();
 		}
 		
 		return reservations;
+	}
+
+	public boolean validateRerservation(Integer reservationId) {
+		String query = String.format("SELECT * FROM `reservations` WHERE id=%d AND status LIKE 'reserved'", reservationId);
+		ResultSet rs = connect.executeQuery(query);
+		
+		try {
+			while(rs.next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+			return false;
+		}
+		return false;
 	}
 }
