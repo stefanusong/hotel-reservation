@@ -27,7 +27,7 @@ public class ReservationService {
 	 	String dateInStr, dateOutStr, paymentMethod;
 		Integer roomNo;
 		
-		// Get date rage
+		// Get date range
 		System.out.print("Enter your check in date [yyyy-mm-dd]:");
 		dateInStr = sc.nextLine();
 		
@@ -96,6 +96,63 @@ public class ReservationService {
 		
 	}
 	
+	public void cancelReservation() {
+		getUserReservations();
+	
+		User loggedInUser = userService.getLoggedInUser();
+		Vector<Reservation> reservations = reservationRepo.getReservationByUserId(loggedInUser.getId());
+
+		if (reservations.isEmpty()) {
+			return;
+		} else {
+			boolean confirmed = false;
+			String confirmation;
+			
+			do {
+				System.out.print("Are you sure you want to cancel this reservation? [yes | no]: ");
+				confirmation = sc.nextLine();
+			} while(!confirmation.equalsIgnoreCase("yes") && !confirmation.equalsIgnoreCase("no"));
+			
+			confirmed = confirmation.equalsIgnoreCase("yes");
+			
+			if(!confirmed) {
+				System.out.println("Alright, have a nice day!");
+				System.out.println("Press enter to continue..");
+				sc.nextLine();
+				return;
+			} else {
+				System.out.println("Cancel Reservation Form");
+				System.out.println("=======================");
+				System.out.printf("Insert your reservation ID [1 - %d]: ", reservations.size());
+				
+				int reserveID = Integer.parseInt(sc.nextLine());
+				
+				do {
+					System.out.print("Are you sure you want to cancel this reservation? [yes | no]: ");
+					confirmation = sc.nextLine();
+				} while(!confirmation.equalsIgnoreCase("yes") && !confirmation.equalsIgnoreCase("no"));
+				
+				confirmed = confirmation.equalsIgnoreCase("yes");
+				
+				if(!confirmed) {
+					System.out.println("Alright, your reservation is safe with us!");
+					System.out.println("Press enter to continue..");
+					sc.nextLine();
+					return;
+				}
+				
+				reservationRepo.cancelReservation(reserveID);
+				
+				TransactionService transService = TransactionService.getInstance();
+				transService.deleteTransaction(reserveID);
+				
+				System.out.printf("Reservation (ID: %d) has been cancelled!\n", reservations.get(reserveID-1).getId());
+				System.out.println("press enter to continue...");
+				sc.nextLine();
+			}
+		}
+	}
+	
 	public void getUserReservations() {
 		System.out.println("Your reservations");
 		System.out.println("=======================");
@@ -108,13 +165,15 @@ public class ReservationService {
 			System.out.printf("%3s | %16s | %10s | %10s | %8s |\n", "No.", "Reservation Date", "Date In", "Date Out", "Room No");
 			int ctr = 0;
 			for (Reservation reservation : reservations) {
-				System.out.printf("%3d | %16s | %10s | %10s | %8s |\n", 
-						++ctr, 
-						reservation.getReservationDate().toString(), 
-						reservation.getDateIn().toString(),
-						reservation.getDateOut().toString(),
-						reservation.getRoomId().toString()
-				);
+				if (reservation.getStatus().equals("reserved")) {
+					System.out.printf("%3d | %16s | %10s | %10s | %8s |\n", 
+							++ctr, 
+							reservation.getReservationDate().toString(), 
+							reservation.getDateIn().toString(),
+							reservation.getDateOut().toString(),
+							reservation.getRoomId().toString()
+					);
+				}
 			}
 		}
 		

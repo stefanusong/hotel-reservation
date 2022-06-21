@@ -130,11 +130,11 @@ public class Main {
 				reservationService.getUserReservations();
 				break;
 			case 3:
-				System.out.println("Cancelling..");
+				reservationService.cancelReservation();
 				break;
 			case 4:
-				System.out.println("Fetching profile..");
-				System.out.println("Viewing.. viewing..");
+				UserService userService = UserService.getInstance();
+				userService.getUserInfo();
 				break;
 			case 5:
 				System.out.print("Logging out.. [Press ENTER to continue] ");
@@ -168,8 +168,8 @@ public class Main {
 				System.out.println("Managing Reservations..");
 				break;
 			case 3:
-				System.out.println("Fetching profile..");
-				System.out.println("Viewing.. viewing..");
+				UserService userService = UserService.getInstance();
+				userService.getUserInfo();
 				break;
 			case 4:
 				System.out.print("Logging out.. [Press ENTER to continue] ");

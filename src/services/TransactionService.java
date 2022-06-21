@@ -19,4 +19,8 @@ public class TransactionService {
 	public void createTransaction(Transaction newTransaction) {
 		reservationRepo.insertTransaction(newTransaction);
 	}
+	
+	public void deleteTransaction(int ID) {
+		reservationRepo.deleteTransaction(ID);
+	}
 }

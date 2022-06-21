@@ -39,6 +39,15 @@ public class ReservationRepository {
 		
 		return createdId;
 	}
+	
+	public void cancelReservation(int reservationID) {
+		try {
+			String query = String.format("UPDATE `reservations` SET `status`='cancelled' WHERE id = %d", reservationID);
+			connect.executeUpdate(query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public Vector<Reservation> getReservationByUserId(Integer userId) {
 		Vector<Reservation> reservations = new Vector<>();

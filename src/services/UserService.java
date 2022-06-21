@@ -3,6 +3,7 @@ package services;
 import java.util.Scanner;
 
 import database.UserRepository;
+import entities.Admin;
 import entities.Customer;
 import entities.User;
 
@@ -64,6 +65,27 @@ public class UserService {
 		System.out.println("Your account has been registered!");
 		sc.nextLine();
 		System.out.println();
+	}
+	
+	public void getUserInfo() {
+		System.out.println("Your Profile");
+		System.out.println("============");
+		System.out.printf("1. User ID\t: %d\n", loggedInUser.getId());
+		System.out.printf("2. Name\t\t: %s\n", loggedInUser.getName());
+		System.out.printf("3. Email\t: %s\n", loggedInUser.getEmail());
+		
+		
+		if (loggedInUser.getRole().equals("customer")) {
+			Customer customerLoggedIn = (Customer) loggedInUser;
+			System.out.printf("4. Phone Number\t: %s\n", customerLoggedIn.getCustomerPhoneNumber());
+		} else {
+			Admin adminLoggedIn = (Admin) loggedInUser;
+			System.out.printf("4. Branch Office: %s\n", adminLoggedIn.getBranchOffice());
+			System.out.printf("[Joined since %s]\n", adminLoggedIn.getJoinedDate().toString());
+		}
+		
+		System.out.println("Press enter to continue..");
+		sc.nextLine();
 	}
 	
 	private int askInt() {

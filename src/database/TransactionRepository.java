@@ -22,4 +22,9 @@ public class TransactionRepository {
 				newTransaction.getPaymentMethod(), newTransaction.getTotalPayment());
 		connect.executeUpdate(query);
 	}
+	
+	public void deleteTransaction(int ID) {
+		String query = String.format("DELETE FROM `transactions` WHERE reservation_id = %d", ID);
+		connect.executeUpdate(query);
+	}
 }
