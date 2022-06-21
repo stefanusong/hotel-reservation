@@ -67,7 +67,7 @@ public class Main {
 			System.out.println("Login");
 			System.out.println("1. Login as customer");
 			System.out.println("2. Login as admin");
-			System.out.println("3. Cancel");
+			System.out.println("3. < Back");
 			System.out.print("> ");
 			int choice = askInt();
 			
@@ -107,10 +107,12 @@ public class Main {
 	
 	private void showCustomerPanel() {
 		ReservationService reservationService = ReservationService.getInstance();
+		UserService userService = UserService.getInstance();
 		
 		while (true) {
 			int option;
 			
+			userService.greetUser();
 			System.out.println("1. Make a reservation");
 			System.out.println("2. View your reservations");
 			System.out.println("3. Cancel a reservation");
@@ -133,7 +135,6 @@ public class Main {
 				reservationService.cancelReservation();
 				break;
 			case 4:
-				UserService userService = UserService.getInstance();
 				userService.getUserInfo();
 				break;
 			case 5:
@@ -146,9 +147,12 @@ public class Main {
 	}
 	
 	private void showAdminPanel() {
+		UserService userService = UserService.getInstance();
+		
 		while (true) {
 			int option;
 			
+			userService.greetUser();
 			System.out.println("1. Manage Rooms");
 			System.out.println("2. Manage Reservations");
 			System.out.println("3. View Profile");
@@ -168,7 +172,6 @@ public class Main {
 				System.out.println("Managing Reservations..");
 				break;
 			case 3:
-				UserService userService = UserService.getInstance();
 				userService.getUserInfo();
 				break;
 			case 4:

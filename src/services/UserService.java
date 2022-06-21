@@ -88,6 +88,12 @@ public class UserService {
 		sc.nextLine();
 	}
 	
+	public void greetUser() {
+		System.out.println("=================================");
+		System.out.println("Welcome back, " + loggedInUser.getName() + " !");
+		System.out.println("=================================");
+	}
+	
 	private int askInt() {
 		int number;
 		

@@ -19,7 +19,7 @@ import java.sql.*;
 public final class Connect {
 	
 	private final String USERNAME = "root"; // change with your MySQL username, the default username is 'root'
-	private final String PASSWORD = ""; // change with your MySQL password, the default password is empty
+	private final String PASSWORD = "password"; // change with your MySQL password, the default password is empty
 	private final String DATABASE = "hotel_reservation"; // change with the database name that you use
 	private final String HOST = "localhost:3306"; // change with your MySQL host, the default port is 3306
 	private final String CONECTION = String.format("jdbc:mysql://%s/%s", HOST, DATABASE);
