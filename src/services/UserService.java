@@ -90,7 +90,7 @@ public class UserService {
 	}
 	
 	public void greetUser() {
-		System.out.println("=================================");
+		System.out.println("\n=================================");
 		System.out.println("Welcome back, " + loggedInUser.getName() + " !");
 		System.out.println("=================================");
 	}

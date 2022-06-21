@@ -2,6 +2,7 @@ import java.util.Scanner;
 import database.DbSeeder;
 import services.ReservationService;
 import services.RoomService;
+import services.TransactionService;
 import services.UserService;
 
 public class Main {
@@ -67,7 +68,7 @@ public class Main {
 			System.out.println("Login");
 			System.out.println("1. Login as customer");
 			System.out.println("2. Login as admin");
-			System.out.println("3. < Back");
+			System.out.println("3. Back");
 			System.out.print("> ");
 			int choice = askInt();
 			
@@ -148,6 +149,7 @@ public class Main {
 	
 	private void showAdminPanel() {
 		UserService userService = UserService.getInstance();
+		TransactionService transactionService = TransactionService.getInstance();
 		
 		while (true) {
 			int option;
@@ -156,12 +158,13 @@ public class Main {
 			System.out.println("1. Manage Rooms");
 			System.out.println("2. Manage Reservations");
 			System.out.println("3. View Profile");
-			System.out.println("4. Logout");
+			System.out.println("4. Transaction Report");
+			System.out.println("5. Logout");
 			
 			do {
-				System.out.print("[1 - 4] >> ");
+				System.out.print("[1 - 5] >> ");
 				option = askInt();
-			} while (option < 1 || option > 4);
+			} while (option < 1 || option > 5);
 			
 			switch (option) {
 			case 1:
@@ -174,6 +177,9 @@ public class Main {
 				userService.getUserInfo();
 				break;
 			case 4:
+				transactionService.getReport();
+				break;
+			case 5:
 				System.out.print("Logging out.. [Press ENTER to continue] ");
 				sc.nextLine();
 				System.out.println();

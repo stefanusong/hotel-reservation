@@ -3,12 +3,13 @@ package services;
 import java.util.Scanner;
 
 import database.TransactionRepository;
+import entities.Report;
 import entities.Transaction;
 
 public class TransactionService {
 	private static TransactionService instance;
 	Scanner sc = new Scanner(System.in);
-	TransactionRepository reservationRepo = TransactionRepository.getInstance();
+	TransactionRepository transactionRepo = TransactionRepository.getInstance();
 	UserService userService = UserService.getInstance();
 	
 	public static TransactionService getInstance() {
@@ -17,10 +18,28 @@ public class TransactionService {
 	}
 	
 	public void createTransaction(Transaction newTransaction) {
-		reservationRepo.insertTransaction(newTransaction);
+		transactionRepo.insertTransaction(newTransaction);
 	}
 	
 	public void deleteTransaction(int ID) {
-		reservationRepo.deleteTransaction(ID);
+		transactionRepo.deleteTransaction(ID);
+	}
+	
+	public void getReport() {
+		System.out.println("\n===================");
+		System.out.println("Transaction Report");
+		System.out.println("===================");
+
+		System.out.println("\n=========This Month=========");
+		Report monthlyReport = transactionRepo.getMonthlyReport();
+		monthlyReport.printReport();
+		
+		System.out.println("\n=========This Year=========");
+		Report anualReport = transactionRepo.getAnualReport();
+		anualReport.printReport();
+		
+		System.out.println("\n=========All Time=========");
+		Report allTimeReport = transactionRepo.getAllTimeReport();
+		allTimeReport.printReport();
 	}
 }
