@@ -89,12 +89,11 @@ public class UserService {
 		sc.nextLine();
 	}
 	
-<<<<<<< HEAD
 	public void greetUser() {
 		System.out.println("=================================");
 		System.out.println("Welcome back, " + loggedInUser.getName() + " !");
 		System.out.println("=================================");
-=======
+	
 	public void displayAllUser() {
 		Vector<Customer> customer = userRepo.getAllUser();
 		
@@ -110,7 +109,6 @@ public class UserService {
 				"| %-5d | %-25s | %-25s | %-15s | %-5d |"
 				, c.getId(), c.getName(), c.getEmail(), c.getCustomerPhoneNumber(), c.getCustomerAge()));
 		}
->>>>>>> 70c60ceb65e952cc418ce4b54ef57d4cc07da405
 	}
 	
 	private int askInt() {
