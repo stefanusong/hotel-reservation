@@ -96,4 +96,32 @@ public class RoomRepository {
 		
 		return rooms;
 	}
+	
+	public void insertRoom(Room room) {
+		String query = String.format(
+				"INSERT INTO `rooms`(`room_no`, `capacity`, `price_per_night`, `room_type`) \r\n" + 
+				"VALUES (%d, %d, %d, '%s')"
+				, room.getRoomNo(), room.getCapacity()
+				, room.getPricePerNight(), room.getRoomType());
+		
+		connect.executeUpdate(query);
+	}
+	
+	public void updateRoom(Room room) {
+		String query = String.format(
+				"UPDATE `rooms` \r\n" + 
+				"SET `capacity`=%d,`price_per_night`=%d,`room_type`='%s' \r\n" + 
+				"WHERE `room_no`=%d"
+				, room.getCapacity(), room.getPricePerNight()
+				, room.getRoomType(), room.getRoomNo());
+		
+		connect.executeUpdate(query);
+	}
+	
+	public void deleteRoom(Integer roomNo) {
+		String query = "DELETE FROM `rooms` WHERE room_no=" + roomNo;
+		
+		connect.executeUpdate(query);
+	}
+	
 }

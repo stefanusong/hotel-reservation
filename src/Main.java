@@ -1,6 +1,7 @@
 import java.util.Scanner;
 import database.DbSeeder;
 import services.ReservationService;
+import services.RoomService;
 import services.UserService;
 
 public class Main {
@@ -160,8 +161,7 @@ public class Main {
 			
 			switch (option) {
 			case 1:
-				System.out.println("Viewing rooms..");
-				System.out.println("Managing rooms..");
+				showManageRoomPanel();
 				break;
 			case 2:
 				System.out.println("Viewing Ongoing Reservations..");
@@ -178,6 +178,32 @@ public class Main {
 				return;
 			}
 		}
+	}
+
+	private void showManageRoomPanel() {
+		RoomService roomService = RoomService.getInstance();
+		roomService.getRooms();
+		int option = -1;
+		
+		System.out.println("1. Insert New Room");
+		System.out.println("2. Update Room Detail");
+		System.out.println("3. Delete Room");
+		System.out.println("4. Cancel");
+		
+		do {
+			System.out.print("[1 - 4] >>");
+			option = askInt();
+		} while(option < 1 || option > 4);
+		
+		if(option == 1) {
+			roomService.insertRoom();
+		} else if(option == 2) {
+			roomService.updateRoom();
+		} else if(option == 3) {
+			roomService.deleteRoom();
+		} else if(option == 4) {
+			return;
+		}		
 	}
 
 	private int askInt() {

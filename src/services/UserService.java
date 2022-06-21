@@ -24,7 +24,7 @@ public class UserService {
 		
 		System.out.print("Email: ");
 		email = sc.nextLine();
-		System.out.println("Password: ");
+		System.out.print("Password: ");
 		password = sc.nextLine();
 		
 		if(!userRepo.isUserExists(email, role)) {
