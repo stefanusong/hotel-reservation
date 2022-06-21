@@ -10,12 +10,21 @@ public class Transaction {
 	private String paymentMethod;
 	private Integer totalPayment;
 	
+	// For select
 	public Transaction(Integer id, Integer reservationId, Integer customerId, Date transactionDate,
 			String paymentMethod, Integer totalPayment) {
 		this.id = id;
 		this.reservationId = reservationId;
 		this.customerId = customerId;
 		this.transactionDate = transactionDate;
+		this.paymentMethod = paymentMethod;
+		this.totalPayment = totalPayment;
+	}
+	
+	// For insert
+	public Transaction(Integer reservationId, Integer customerId, String paymentMethod, Integer totalPayment) {
+		this.reservationId = reservationId;
+		this.customerId = customerId;
 		this.paymentMethod = paymentMethod;
 		this.totalPayment = totalPayment;
 	}

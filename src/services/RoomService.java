@@ -1,8 +1,10 @@
 package services;
 
 import java.util.Scanner;
+import java.util.Vector;
 
 import database.RoomRepository;
+import entities.Room;
 
 public class RoomService {
 	private static RoomService instance;
@@ -14,5 +16,11 @@ public class RoomService {
 		return instance;
 	}
 	
+	public Vector<Room> getAvailableRoomsBetween(String dateIn, String dateOut) {
+		return roomRepo.getRoomsByDate(dateIn, dateOut);
+	}
 	
+	public Room getRoomByNo(Integer roomNo) {
+		return roomRepo.getRoomByNo(roomNo);
+	}
 }

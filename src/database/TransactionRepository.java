@@ -16,6 +16,10 @@ public class TransactionRepository {
 	}
 	
 	public void insertTransaction(Transaction newTransaction) {
-		// insert transaction here..
+		String query = String.format("INSERT INTO transactions(reservation_id, customer_id, transaction_date, payment_method, total_payment)\r\n" + 
+				"VALUES('%d', '%d', CURRENT_DATE, '%s', '%d');", 
+				newTransaction.getReservationId(), newTransaction.getCustomerId(),
+				newTransaction.getPaymentMethod(), newTransaction.getTotalPayment());
+		connect.executeUpdate(query);
 	}
 }

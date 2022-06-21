@@ -149,7 +149,7 @@ public class Main {
 			int option;
 			
 			System.out.println("1. Manage Rooms");
-			System.out.println("2. Manage Payments");
+			System.out.println("2. Manage Reservations");
 			System.out.println("3. View Profile");
 			System.out.println("4. Logout");
 			
@@ -164,8 +164,8 @@ public class Main {
 				System.out.println("Managing rooms..");
 				break;
 			case 2:
-				System.out.println("Viewing available payments..");
-				System.out.println("Managing payments..");
+				System.out.println("Viewing Ongoing Reservations..");
+				System.out.println("Managing Reservations..");
 				break;
 			case 3:
 				System.out.println("Fetching profile..");

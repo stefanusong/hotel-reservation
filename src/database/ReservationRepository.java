@@ -18,12 +18,33 @@ public class ReservationRepository {
 		if(instance == null) instance = new ReservationRepository();
 		return instance;
 	}
+	
+	public Integer insertReservation(Reservation newReservation) {
+		Integer createdId = 0;
+		try {
+			String query = String.format("INSERT INTO reservations(customer_id, room_no, reservation_date, date_in, date_out, status)\r\n" + 
+					"VALUES('%d', '%d', CURRENT_DATE, '%s', '%s', 'reserved');", 
+					newReservation.getCustomerId(), newReservation.getRoomId(), 
+					newReservation.getDateIn().toString(), newReservation.getDateOut().toString());
+			connect.executeUpdate(query);
+			
+			String query2 = "SELECT id FROM reservations ORDER BY id DESC LIMIT 1";
+			ResultSet res = connect.executeQuery(query2);
+			if(res.next()) {
+				createdId = res.getInt("id");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return createdId;
+	}
 
 	public Vector<Reservation> getReservationByUserId(Integer userId) {
 		Vector<Reservation> reservations = new Vector<>();
 		
 		try {
-			String query = String.format("SELECT * FROM reservations WHERE id = %d", userId);
+			String query = String.format("SELECT * FROM reservations WHERE customer_id = %d AND status NOT LIKE 'cancelled';", userId);
 			ResultSet res = connect.executeQuery(query);
 			
 			while(res.next()) {
@@ -33,7 +54,8 @@ public class ReservationRepository {
 							res.getDate("date_in"),
 							res.getDate("date_out"),
 							res.getInt("customer_id"),
-							res.getInt("room_no")
+							res.getInt("room_no"),
+							res.getString("status")
 						);
 				
 				reservations.add(currReservation);

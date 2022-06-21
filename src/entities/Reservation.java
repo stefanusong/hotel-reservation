@@ -8,11 +8,22 @@ public class Reservation {
 	private Date dateOut;
 	private Integer customerId;
 	private Integer roomId;
+	private String status; // reserved | cancelled
 	
+	// For Select
 	public Reservation(Integer id, Date reservationDate, Date dateIn, Date dateOut, Integer customerId,
-			Integer roomId) {
+			Integer roomId, String status) {
 		this.id = id;
 		this.reservationDate = reservationDate;
+		this.dateIn = dateIn;
+		this.dateOut = dateOut;
+		this.customerId = customerId;
+		this.roomId = roomId;
+		this.status = status;
+	}
+	
+	// For Insert
+	public Reservation(Date dateIn, Date dateOut, Integer customerId, Integer roomId) {
 		this.dateIn = dateIn;
 		this.dateOut = dateOut;
 		this.customerId = customerId;
@@ -54,6 +65,13 @@ public class Reservation {
 	}
 	public void setRoomId(Integer roomId) {
 		this.roomId = roomId;
+	}
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

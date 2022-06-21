@@ -1,10 +1,13 @@
 package services;
 
+import java.sql.Date;
 import java.util.Scanner;
 import java.util.Vector;
 
 import database.ReservationRepository;
 import entities.Reservation;
+import entities.Room;
+import entities.Transaction;
 import entities.User;
 
 public class ReservationService {
@@ -20,14 +23,77 @@ public class ReservationService {
 	}
 	
 	public void createReservation() {
-		System.out.println("Oops, not implemented yet");
-		/* steps:
-		 1. get reservation data from user input (date in, date out, room no)
-		 2. check di table reservations, apakah di range date itu udah ada room no tsb yg direserve
-		 3. kalo roomnya available di tanggal itu, next pura2 minta user buat pay (println gitu aja paling)
-		 4. kalo yes, insert reservation sama transaction
-		 5. kalo no, return;
-		 */
+	 	Date dateIn, dateOut;
+	 	String dateInStr, dateOutStr, paymentMethod;
+		Integer roomNo;
+		
+		// Get date rage
+		System.out.print("Enter your check in date [yyyy-mm-dd]:");
+		dateInStr = sc.nextLine();
+		
+		System.out.print("Enter your check out date [yyyy-mm-dd]:");
+		dateOutStr = sc.nextLine();
+		
+		// Get rooms
+		System.out.println("Getting available rooms on these date...");
+		RoomService roomService = RoomService.getInstance();
+		Vector<Room> rooms = roomService.getAvailableRoomsBetween(dateInStr, dateOutStr);
+		
+		System.out.printf("%7s | %8s | %7s | %12s\n", "Room No", "Capacity", "Price", "Type");
+		for (Room room : rooms) {
+			System.out.printf("%7d | %8d | %7d | %12s\n", room.getRoomNo(), room.getCapacity(), room.getPricePerNight(), room.getRoomType());
+		}
+		
+		do {
+			System.out.print("Enter room no: ");
+			roomNo = askInt();
+		} while(!isRoomAvailable(roomNo, rooms));
+		
+		// Get payment details
+		do {
+			System.out.print("Choose payment method [virtual account | gopay | ovo]: ");
+			paymentMethod = sc.nextLine();
+		} while(!paymentMethod.equalsIgnoreCase("virtual account") 
+				&& !paymentMethod.equalsIgnoreCase("gopay") 
+				&& !paymentMethod.equalsIgnoreCase("ovo"));
+		
+		// Confirmation
+		boolean confirmed = false;
+		String confirmation;
+		do {
+			System.out.print("Are you sure to make this reservation ? [yes | no]: ");
+			confirmation = sc.nextLine();
+		} while(!confirmation.equalsIgnoreCase("yes") && !confirmation.equalsIgnoreCase("no"));
+		
+		confirmed = confirmation.equalsIgnoreCase("yes");
+		if(!confirmed) {
+			System.out.println("Okay, reservation not created");
+			System.out.println("Press enter to continue..");
+			sc.nextLine();
+			return;
+		}
+		
+		// Get current user
+		UserService userService = UserService.getInstance();
+		User currUser = userService.getLoggedInUser();
+		
+		// Insert reservation
+		dateIn = Date.valueOf(dateInStr);
+		dateOut = Date.valueOf(dateOutStr);
+		Reservation newReservation = new Reservation(dateIn, dateOut, currUser.getId(), roomNo);
+		
+		// Insert transaction
+		Integer newReservationId = reservationRepo.insertReservation(newReservation);
+		Integer roomPrice = roomService.getRoomByNo(roomNo).getPricePerNight();
+		
+		Transaction newTransaction = new Transaction(newReservationId, currUser.getId(), paymentMethod, roomPrice);
+		TransactionService transService = TransactionService.getInstance();
+		transService.createTransaction(newTransaction);
+		
+		System.out.println("Thank you, reservation created !");
+		System.out.println("Press enter to continue..");
+		sc.nextLine();
+		
 	}
 	
 	public void getUserReservations() {
@@ -36,19 +102,46 @@ public class ReservationService {
 		User loggedInUser = userService.getLoggedInUser();
 		Vector<Reservation> reservations = reservationRepo.getReservationByUserId(loggedInUser.getId());
 		
-		System.out.printf("%3s | %16s | %10s | %10s | %8s |\n", "No.", "Reservation Date", "Date In", "Date Out", "Room No");
-		int ctr = 0;
-		for (Reservation reservation : reservations) {
-			System.out.printf("%3d | %16s | %10s | %10s | %8s |\n", 
-					++ctr, 
-					reservation.getReservationDate().toString(), 
-					reservation.getDateIn().toString(),
-					reservation.getDateOut().toString(),
-					reservation.getRoomId().toString()
-			);
+		if(reservations.size() == 0) {
+			System.out.println("You don't have any reservation yet.");
+		} else {
+			System.out.printf("%3s | %16s | %10s | %10s | %8s |\n", "No.", "Reservation Date", "Date In", "Date Out", "Room No");
+			int ctr = 0;
+			for (Reservation reservation : reservations) {
+				System.out.printf("%3d | %16s | %10s | %10s | %8s |\n", 
+						++ctr, 
+						reservation.getReservationDate().toString(), 
+						reservation.getDateIn().toString(),
+						reservation.getDateOut().toString(),
+						reservation.getRoomId().toString()
+				);
+			}
 		}
 		
 		System.out.println("Press enter to continue..");
 		sc.nextLine();
+	}
+	
+	private boolean isRoomAvailable(Integer roomNo, Vector<Room> rooms) {
+		for (Room room : rooms) {
+			if(room.getRoomNo() == roomNo) return true;
+		}
+		
+		return false;
+	}
+	
+	private int askInt() {
+		int number;
+		
+		try {
+			number = sc.nextInt();
+		} catch (Exception e) {
+			System.out.println("Please ENTER a number!");
+			number = -57;
+		} finally {
+			sc.nextLine();
+		}
+		
+		return number;
 	}
 }
