@@ -1,6 +1,7 @@
 package services;
 
 import java.util.Scanner;
+import java.util.Vector;
 
 import database.UserRepository;
 import entities.Admin;
@@ -88,10 +89,28 @@ public class UserService {
 		sc.nextLine();
 	}
 	
+<<<<<<< HEAD
 	public void greetUser() {
 		System.out.println("=================================");
 		System.out.println("Welcome back, " + loggedInUser.getName() + " !");
 		System.out.println("=================================");
+=======
+	public void displayAllUser() {
+		Vector<Customer> customer = userRepo.getAllUser();
+		
+		
+		System.out.println("Customer List");
+		System.out.println("===================");
+		System.out.println(String.format(
+				"| %-5s | %-25s | %-25s | %-15s | %-5s |"
+				, "Id", "Name", "Email", "Phone Number", "Age"));
+		
+		for(Customer c: customer) {
+			System.out.println(String.format(
+				"| %-5d | %-25s | %-25s | %-15s | %-5d |"
+				, c.getId(), c.getName(), c.getEmail(), c.getCustomerPhoneNumber(), c.getCustomerAge()));
+		}
+>>>>>>> 70c60ceb65e952cc418ce4b54ef57d4cc07da405
 	}
 	
 	private int askInt() {
@@ -111,6 +130,14 @@ public class UserService {
 
 	public User getLoggedInUser() {
 		return loggedInUser;
+	}
+	
+	public boolean validateUser(int id) {
+		return userRepo.validateUser(id);
+	}
+	
+	public User getUserById(int id) {
+		return userRepo.getUserById(id);
 	}
 	
 }

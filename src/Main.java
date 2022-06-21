@@ -168,8 +168,7 @@ public class Main {
 				showManageRoomPanel();
 				break;
 			case 2:
-				System.out.println("Viewing Ongoing Reservations..");
-				System.out.println("Managing Reservations..");
+				showManageReservationPanel();
 				break;
 			case 3:
 				userService.getUserInfo();
@@ -209,6 +208,37 @@ public class Main {
 		}		
 	}
 
+	private void showManageReservationPanel() {
+		ReservationService reservationService = ReservationService.getInstance();
+		int option = -1;
+		
+		System.out.println("1. Display Reserved Rerservation");
+		System.out.println("2. Display Cancelled Rerservation");
+		System.out.println("3. Insert New Reservation");
+		System.out.println("4. Update Reservation Detail");
+		System.out.println("5. Cancel Rerservation");
+		System.out.println("6. Cancel");
+		
+		do {
+			System.out.print("[1 - 6] >>");
+			option = askInt();
+		} while(option < 1 || option > 6);
+		
+		if(option == 1) {
+			reservationService.getReservationAdmin("reserved");
+		} else if(option == 2) {
+			reservationService.getReservationAdmin("cancelled");
+		} else if(option == 3) {
+			reservationService.createReservationAdmin();
+		} else if(option == 4) {
+			reservationService.updateReservationAdmin();
+		} else if(option == 5) {
+			reservationService.cancelReservationAdmin();
+		} else if(option == 6) {
+			return;
+		}		
+	}
+	
 	private int askInt() {
 		int number;
 		
