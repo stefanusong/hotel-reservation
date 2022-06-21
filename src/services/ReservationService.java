@@ -117,7 +117,7 @@ public class ReservationService {
 			
 			System.out.println("Cancel Reservation Form");
 			System.out.println("=======================");
-			System.out.printf("Insert your reservation ID [1 - %d]: ", reservations.size());
+			System.out.printf("Insert reservation number [1 - %d]: ", reservations.size());
 			
 			int reservationIdx = Integer.parseInt(sc.nextLine());
 			
@@ -298,6 +298,13 @@ public class ReservationService {
 			boolean confirmed = false;
 			String confirmation;
 			
+			printReservation(reservations);
+			System.out.println("Cancel Reservation Form");
+			System.out.println("=======================");
+			System.out.printf("Insert your reservation ID: ");
+			
+			int reserveID = Integer.parseInt(sc.nextLine());
+			
 			do {
 				System.out.print("Are you sure you want to cancel this reservation? [yes | no]: ");
 				confirmation = sc.nextLine();
@@ -306,41 +313,21 @@ public class ReservationService {
 			confirmed = confirmation.equalsIgnoreCase("yes");
 			
 			if(!confirmed) {
-				System.out.println("Alright, have a nice day!");
+				System.out.println("Alright, your reservation is safe with us!");
 				System.out.println("Press enter to continue..");
 				sc.nextLine();
 				return;
-			} else {
-				printReservation(reservations);
-				System.out.println("Cancel Reservation Form");
-				System.out.println("=======================");
-				System.out.printf("Insert your reservation ID: ");
-				
-				int reserveID = Integer.parseInt(sc.nextLine());
-				
-				do {
-					System.out.print("Are you sure you want to cancel this reservation? [yes | no]: ");
-					confirmation = sc.nextLine();
-				} while(!confirmation.equalsIgnoreCase("yes") && !confirmation.equalsIgnoreCase("no"));
-				
-				confirmed = confirmation.equalsIgnoreCase("yes");
-				
-				if(!confirmed) {
-					System.out.println("Alright, your reservation is safe with us!");
-					System.out.println("Press enter to continue..");
-					sc.nextLine();
-					return;
-				}
-				
-				reservationRepo.cancelReservation(reserveID);
-				
-				TransactionService transService = TransactionService.getInstance();
-				transService.deleteTransaction(reserveID);
-				
-				System.out.printf("Reservation (ID: %d) has been cancelled!\n", reserveID);
-				System.out.println("press enter to continue...");
-				sc.nextLine();
 			}
+			
+			reservationRepo.cancelReservation(reserveID);
+			
+			TransactionService transService = TransactionService.getInstance();
+			transService.deleteTransaction(reserveID);
+			
+			System.out.printf("Reservation (ID: %d) has been cancelled!\n", reserveID);
+			System.out.println("press enter to continue...");
+			sc.nextLine();
+
 		}
 	}
 	

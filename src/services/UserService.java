@@ -93,6 +93,7 @@ public class UserService {
 		System.out.println("=================================");
 		System.out.println("Welcome back, " + loggedInUser.getName() + " !");
 		System.out.println("=================================");
+	}
 	
 	public void displayAllUser() {
 		Vector<Customer> customer = userRepo.getAllUser();
