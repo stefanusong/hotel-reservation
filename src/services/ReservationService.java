@@ -365,10 +365,10 @@ public class ReservationService {
 		}while (!reservationRepo.validateRerservation(reservationId));
 		
 		// Get date range
-		System.out.print("Enter your check in date [yyyy-mm-dd]:");
+		System.out.print("Enter your check in date [yyyy-mm-dd]: ");
 		dateInStr = sc.nextLine();
 		
-		System.out.print("Enter your check out date [yyyy-mm-dd]:");
+		System.out.print("Enter your check out date [yyyy-mm-dd]: ");
 		dateOutStr = sc.nextLine();
 		
 		// Get rooms
@@ -394,7 +394,7 @@ public class ReservationService {
 		
 		//Get Status
 		do {
-			System.out.println("Enter reservation status [reserved | cancelled]: ");
+			System.out.print("Enter reservation status [reserved | cancelled]: ");
 			status = sc.nextLine();
 		} while(!status.equalsIgnoreCase("reserved") && !status.equalsIgnoreCase("cancelled"));
 		
